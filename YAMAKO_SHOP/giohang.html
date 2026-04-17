@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Giỏ hàng</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        body{
+            background:#d7aab8;
+            font-family: Arial;
+        }
+
+        .cart-container{
+            max-width:900px;
+            margin:30px auto;
+            background:white;
+            padding:20px;
+            border-radius:12px;
+            box-shadow:0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .cart-title{
+            font-size:24px;
+            font-weight:bold;
+            margin-bottom:20px;
+        }
+
+        .cart-item{
+            display:flex;
+            gap:15px;
+            padding:15px;
+            border-bottom:1px solid #eee;
+        }
+
+        .cart-item img{
+            width:80px;
+            height:80px;
+            object-fit:cover;
+            border-radius:8px;
+        }
+
+        .cart-info{
+            flex:1;
+        }
+
+        .cart-info h3{
+            margin:0;
+        }
+
+        .qty{
+            margin-top:5px;
+        }
+
+        .qty button{
+            padding:5px 10px;
+            border:none;
+            background:#ff4d6d;
+            color:white;
+            border-radius:5px;
+            cursor:pointer;
+        }
+
+        .remove-btn{
+            background:red;
+            color:white;
+            border:none;
+            padding:5px 10px;
+            border-radius:5px;
+            cursor:pointer;
+        }
+
+        .total{
+            text-align:right;
+            font-size:20px;
+            margin-top:20px;
+        }
+
+        .pay-btn{
+            display:block;
+            width:100%;
+            padding:12px;
+            margin-top:15px;
+            background:linear-gradient(45deg,#ff4d6d,#ff758c);
+            color:white;
+            border:none;
+            border-radius:8px;
+            font-size:16px;
+            cursor:pointer;
+        }
+
+        .empty{
+            text-align:center;
+            padding:50px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="cart-container">
+
+    <div class="cart-title">🛒 Giỏ hàng của bạn</div>
+
+    <!-- GIỎ HÀNG -->
+    <div id="cartList"></div>
+
+    <!-- TỔNG + THANH TOÁN -->
+    <div id="cartSummary"></div>
+
+</div>
+
+<script src="script.js"></script>
+
+<script>
+// ===== RENDER GIỎ HÀNG =====
+function renderCartPage(){
+    let cart = getCart();
+    let list = document.getElementById("cartList");
+    let summary = document.getElementById("cartSummary");
+
+    if(cart.length === 0){
+        list.innerHTML = `
+            <div class="empty">
+                <h2>🛒 Giỏ hàng trống</h2>
+                <a href="index.html">
+                    <button class="pay-btn">Mua ngay</button>
+                </a>
+            </div>
+        `;
+        summary.innerHTML = "";
+        return;
+    }
+
+    let total = 0;
+
+    list.innerHTML = cart.map(i=>{
+        total += i.price * i.quantity;
+
+        return `
+        <div class="cart-item">
+            <img src="${i.image}">
+            
+            <div class="cart-info">
+                <h3>${i.name}</h3>
+                <p>${i.price.toLocaleString()}đ</p>
+
+                <div class="qty">
+                    <button onclick="decrease(${i.id})">-</button>
+                    <span>${i.quantity}</span>
+                    <button onclick="increase(${i.id})">+</button>
+                </div>
+
+                <button class="remove-btn" onclick="removeItem(${i.id})">
+                    Xoá
+                </button>
+            </div>
+        </div>
+        `;
+    }).join("");
+
+    summary.innerHTML = `
+        <div class="total">Tổng: ${total.toLocaleString()}đ</div>
+        <button class="pay-btn" onclick="checkoutFake()">Thanh toán</button>
+    `;
+}
+
+// ===== THANH TOÁN GIẢ LẬP =====
+function checkoutFake(){
+    let name = prompt("Tên người nhận:");
+    let phone = prompt("Số điện thoại:");
+    let address = prompt("Địa chỉ:");
+
+    if(!name || !phone || !address){
+        alert("Vui lòng nhập đầy đủ!");
+        return;
+    }
+
+    alert(
+        "🎉 Đặt hàng thành công!\n\n" +
+        "👤 " + name +
+        "\n📞 " + phone +
+        "\n📍 " + address +
+        "\n\nCảm ơn bạn ❤️"
+    );
+
+    localStorage.removeItem("cart");
+    renderCartPage();
+}
+
+// ===== LOAD =====
+renderCartPage();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>YAMAKO SHOP</title>
+<link rel="stylesheet" href="style.css">
+
+<style>
+body{
+    margin:0;
+    font-family:Arial;
+    background:#f0aec4;
+}
+
+/* HEADER */
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:10px 20px;
+    background:rgb(215, 236, 250);
+    box-shadow:0 2px 10px rgba(0,0,0,0.1);
+}
+
+.logo{
+    width:70px;
+}
+/* HERO */
+.hero{
+    position:relative;
+}
+
+.hero img{
+    width:100%;
+    height:auto;
+    object-fit:contain;
+    border-radius: 0;
+}
+
+.hero-content{
+    position:absolute;
+    top:50%;
+    left:10%;
+    transform:translateY(-50%);
+    color:white;
+}
+
+.btn{
+    display:inline-block;
+    padding:10px 20px;
+    background:#ff4d6d;
+    color:white;
+    border-radius:6px;
+    text-decoration:none;
+}
+
+/* SEARCH */
+.search{
+    text-align:center;
+    margin:20px;
+}
+
+.search input{
+    width:300px;
+    padding:10px;
+}
+
+.search button{
+    padding:10px;
+}
+
+/* GRID */
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+    padding:20px;
+}
+
+/* CARD */
+.card{
+    background:white;
+    padding:15px;
+    border-radius:12px;
+    text-align:center;
+    box-shadow:0 5px 15px rgba(0,0,0,0.1);
+    transition:0.3s;
+}
+
+.card:hover{
+    transform:translateY(-5px);
+}
+
+.card img{
+    width:100%;
+    height:180px;
+    object-fit:cover;
+}
+
+.card button{
+    margin-top:10px;
+    padding:8px;
+    border:none;
+    background:#ff4d6d;
+    color:white;
+    border-radius:6px;
+    cursor:pointer;
+}
+
+/* FOOTER */
+.footer{
+    background:#111;
+    color:white;
+    padding:40px;
+    margin-top:30px;
+}
+
+.footer-container{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:20px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header class="header">
+    <img src="images/logo.jpg" class="logo">
+
+    <nav>
+        <a href="index.html">Trang chủ</a>
+        <a href="sanpham.html">Sản phẩm</a>
+        <a href="giohang.html">Giỏ hàng</a>
+        <span id="userBox"></span>
+    </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+    <img src="images/banner.jpg">
+</section>
+
+<!-- SEARCH -->
+<section class="search">
+    <input type="text" id="searchInput" onkeyup="searchProduct()" placeholder="🔍 Tìm sản phẩm...">
+</section>
+
+<!-- NỔI BẬT -->
+<section>
+    <h2 style="text-align:center">SẢN PHẨM NỔI BẬT</h2>
+
+    <div class="grid">
+
+        <div class="card">
+            <img src="images/ao11.jpg">
+            <h3>Bộ áo điều hoà YAMAKO HERO LIGHT</h3>
+            <p>1.190.000đ</p>
+            <button onclick="viewDetail(1)">Xem</button>
+        </div>
+
+        <div class="card">
+            <img src="images/ao19.jpg">
+            <h3>Bộ áo điều hoà SUPER COOLING</h3>
+            <p>1.399.000đ</p>
+            <button onclick="viewDetail(6)">Xem</button>
+        </div>
+
+        <div class="card">
+            <img src="images/ao23.jpg">
+            <h3>Áo sưởi YAMAKO 7 SUPER GENTLE</h3>
+            <p>1.190.000đ</p>
+            <button onclick="viewDetail(2)">Xem</button>
+        </div>
+
+        <div class="card">
+            <img src="images/ao22.jpg">
+            <h3>Áo sưởi Ghile Super modern YAMAKO 21</h3>
+            <p>990.000đ</p>
+            <button onclick="viewDetail(18)">Xem</button>
+        </div>
+
+    </div>
+</section>
+
+<script src="script.js"></script>
+
+<script>
+// USER UI
+const user = JSON.parse(localStorage.getItem("currentUser"));
+
+if(user){
+    document.getElementById("userBox").innerHTML =
+        user.username + ' | <a href="#" onclick="logout()">Đăng xuất</a>';
+}else{
+    document.getElementById("userBox").innerHTML =
+        '<a href="login.html">Đăng nhập</a>';
+}
+</script>
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <!-- BRAND -->
+        <div class="footer-col brand">
+            <h2>YAMAKO SHOP</h2>
+            <p>Chuyên cung cấp đồ bảo hộ lao động chất lượng cao, giá tốt, giao hàng toàn quốc.</p>
+
+            <div class="newsletter">
+                <input type="email" placeholder="Nhập email nhận ưu đãi...">
+                <button>Đăng ký</button>
+            </div>
+        </div>
+
+        <!-- DANH MỤC -->
+        <div class="footer-col">
+            <h3>Danh mục</h3>
+            <ul>
+                <li>Áo quạt</li>
+                <li>Quần áo bảo hộ</li>
+                <li>Mũ bảo hộ</li>
+                <li>Giày bảo hộ</li>
+                <li>Phụ kiện</li>
+            </ul>
+        </div>
+
+        <!-- CHÍNH SÁCH -->
+        <div class="footer-col">
+            <h3>Chính sách</h3>
+            <ul>
+                <li>Bảo mật</li>
+                <li>Vận chuyển</li>
+                <li>Đổi trả</li>
+                <li>Điều khoản</li>
+            </ul>
+        </div>
+
+        <!-- LIÊN HỆ -->
+        <div class="footer-col">
+            <h3>Liên hệ</h3>
+            <p>📞 0387 752 194</p>
+            <p>📧 double2t@gmail.com</p>
+            <p>📍 Nam Định, Việt Nam</p>
+
+            <div class="social">
+                <a href="#">F</a>
+                <a href="#">T</a>
+                <a href="#">I</a>
+                <a href="#">Y</a>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- PAYMENT -->
+    <div class="payment">
+        <span>Thanh toán:</span>
+        <img src="https://img.icons8.com/color/48/visa.png"/>
+        <img src="https://img.icons8.com/color/48/mastercard.png"/>
+        <img src="https://img.icons8.com/color/48/visa.png"/>
+        <img src="https://img.icons8.com/color/48/bank-card-back-side.png"/>
+    </div>
+
+    <!-- MAP -->
+    <div class="footer-map">
+        <iframe 
+            src="https://maps.google.com/maps?q=Nam%20Dinh&t=&z=13&ie=UTF8&iwloc=&output=embed"
+            loading="lazy">
+        </iframe>
+    </div>
+
+    <!-- BOTTOM -->
+    <div class="footer-bottom">
+        © 2026 <b>YAMAKO SHOP</b> | Thiết kế bởi Nguyễn Thu Hương 😎
+    </div>
+
+</footer>
+<script>
+renderProducts();
+</script>
+</body>
+</html>

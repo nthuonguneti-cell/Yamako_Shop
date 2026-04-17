@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Sản phẩm</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="header">
+    <img src="images/logo.jpg" class="logo">
+    <nav>
+        <a href="index.html">Trang chủ</a>
+        <a href="giohang.html">Giỏ hàng</a>
+    </nav>
+</header>
+
+<h2 style="text-align:center">TẤT CẢ SẢN PHẨM</h2>
+
+<div class="filter-box">
+
+    <div class="filter-group">
+        <button onclick="filterProduct('all')">Tất cả</button>
+        <button onclick="filterProduct('quat')">Áo quạt</button>
+        <button onclick="filterProduct('suoi')">Áo sưởi</button>
+    </div>
+
+    <div class="filter-group">
+        <button onclick="sortProduct('low')">Giá thấp → cao</button>
+        <button onclick="sortProduct('high')">Giá cao → thấp</button>
+    </div>
+
+</div>
+<div id="productList" style="
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:20px;
+padding:40px;
+"></div>
+
+<script src="script.js"></script>
+<script>
+function loadProducts(){
+    let products = JSON.parse(localStorage.getItem("products")) || [];
+
+    let box = document.getElementById("productList");
+
+    if(products.length === 0){
+        box.innerHTML = "<h3>Chưa có sản phẩm nào!</h3>";
+        return;
+    }
+
+    let html = "";
+
+    products.forEach((p, index)=>{
+        html += `
+        <div class="product">
+            <img src="${p.image}" style="width:100%;height:200px;object-fit:cover">
+
+            <h3>${p.name}</h3>
+            <p>${p.price}đ</p>
+
+            onclick="viewDetail(${p.id})"
+                Xem chi tiết
+            </button>
+        </div>
+        `;
+    });
+
+    box.innerHTML = html;
+}
+
+loadProducts();
+</script>
+</body>
+</html>

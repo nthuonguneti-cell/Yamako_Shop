@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Chi tiết sản phẩm</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="detailBox" style="padding:40px"></div>
+
+<script>
+let p = JSON.parse(localStorage.getItem("detailProduct"));
+
+let html = `
+<div style="max-width:600px;margin:auto;background:white;padding:20px;border-radius:10px">
+    <img src="${p.image}" style="width:100%;border-radius:10px">
+
+    <h2>${p.name}</h2>
+    <h3>${p.price}đ</h3>
+
+    <p>${p.desc}</p>
+    <p>${p.detail}</p>
+
+    <button onclick="addToCart()">Thêm vào giỏ</button>
+</div>
+`;
+
+document.getElementById("detailBox").innerHTML = html;
+
+function addToCart(){
+    let currentUser = JSON.parse(localStorage.getItem("currentUser"));
+
+    if(!currentUser){
+        alert("Đăng nhập trước!");
+        window.location.href = "login.html";
+        return;
+    }
+
+    let cart = JSON.parse(localStorage.getItem("cart_" + currentUser.username)) || [];
+
+    let exist = cart.find(item => item.name === p.name);
+
+    if(exist){
+        exist.quantity++;
+    } else {
+        cart.push({...p, quantity:1});
+    }
+
+    localStorage.setItem("cart_" + currentUser.username, JSON.stringify(cart));
+
+    alert("Đã thêm vào giỏ!");
+}
+</script>
+
+</body>
+</html>
